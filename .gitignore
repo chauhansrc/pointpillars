@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# data, checkpoints and run outputs (publish weights as a GitHub Release asset instead)
+kitti/
+data/
+outputs/
+*.pth
+*.pt
+*.zip

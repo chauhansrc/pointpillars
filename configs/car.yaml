@@ -1,0 +1,56 @@
+# PointPillars - KITTI, Car only.
+# Frame convention: LiDAR, x forward, y left, z up. Boxes are (x, y, z, dx, dy, dz, heading).
+
+root: /content/kitti
+cls_name: Car
+
+# Pillar grid
+pc_range: [0.0, -39.68, -3.0, 69.12, 39.68, 1.0]   # xmin ymin zmin xmax ymax zmax
+voxel_size: [0.16, 0.16, 4.0]
+max_pts: 32            # N - points kept per pillar
+max_pillars: 12000     # P - pillars kept per sample
+pfn_channels: 64       # C - pillar feature width
+
+# Anchors and target assignment
+anchor_size: [3.9, 1.6, 1.56]          # dx dy dz
+anchor_bottom: -1.78
+anchor_rotations: [0.0, 1.5707963267948966]
+match_iou: 0.60
+unmatch_iou: 0.45
+dir_offset: 0.78539
+
+augment:
+  flip_prob: 0.5
+  rot_range: [-0.7853981633974483, 0.7853981633974483]
+  scale_range: [0.95, 1.05]
+
+loss:
+  focal_alpha: 0.25
+  focal_gamma: 2.0
+  smooth_l1_beta: 0.1111111111111111
+  w_cls: 1.0
+  w_box: 2.0
+  w_dir: 0.2
+
+train:
+  epochs: 20
+  batch_size: 8
+  num_workers: 2       # Colab exposes 2 CPU cores
+  lr: 0.003
+  weight_decay: 0.01
+  betas: [0.95, 0.99]
+  pct_start: 0.4
+  div_factor: 10
+  final_div_factor: 10000
+  grad_clip: 10.0
+  amp: true
+  eval_every: 5        # epochs; 0 disables in-training evaluation
+  log_every: 100       # iterations
+  seed: 0
+
+test:
+  batch_size: 4
+  score_thr: 0.3
+  nms_thr: 0.1
+  nms_pre: 500
+  max_dets: 100
